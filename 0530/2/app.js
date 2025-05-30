@@ -4,7 +4,7 @@ const PORT = 3001;
 
 app.use(express.json());  // JSON 요청 바디를 파싱하는 미들웨어 등록(꼭 제일 위에)
 
-let users = [1,2,3,4,5];
+const users = [1,2,3,4,5];
 const posts = [
 	{
 		"id": 1,
@@ -21,6 +21,8 @@ const posts = [
     "createdAt": "2024-05-29T12:00:00Z"
   }
 ];
+
+// 특정 사용자의 게시글 조회
 
 // 특정 게시글 조회
 app.get('/posts/:id', (req,res)=>{
@@ -70,10 +72,15 @@ app.get('/users/:id', (req,res)=>{
 // 사용자 삭제
 app.delete('/users/:id', (req,res)=>{
   const id = Number(req.params.id);
-  console.log(id);
 
   if (users.includes(id)) {
-    users = users.filter(user=>user!==id);  // id가 아닌 값들만 가지고 새로운 배열 만들어 반환(filter)
+    console.log(users)
+
+    for(let i=0; i<users.length; i++) {
+      if (users[i] === id) {
+        users.splice(i,1);  // [i]부터 1개 삭제해라
+      }
+    }
     res.send({"message": "사용자가 삭제되었습니다."});
     return;
   } else res.send({"error": "해당 사용자를 찾을 수 없습니다."});
