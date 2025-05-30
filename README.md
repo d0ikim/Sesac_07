@@ -1,1 +1,4 @@
-# practiceJavaScript
+- HTML
+- CSS
+- JavaScript
+- Node.js
