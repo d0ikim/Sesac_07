@@ -2,3 +2,6 @@
 - CSS
 - JavaScript
 - Node.js
+- DB
+  - MySQL
+    - Prisma (ORM)
