@@ -24,8 +24,9 @@ module.exports = (sequelize) => {
   // 모델 간의 관계를 여기에 정의
   Post.associate = (models) => {
     // 예: User.hasMany(models.Post);
-    Post.hasMany(models.Post, { foreignkey: 'userId', as: 'posts'})
-    // 여기 코드 보여주시다가 말고 게시판과제 안내하심.. 뭐.. 나는 시퀄라이즈 어려워서 안쓰고 프리즈마 쓸거니 ㄱㅊ음
+    Post.hasMany(models.Post, {
+      foreignkey: 'userId', // <-- 중요: Post 테이블의 외래 키 컬럼이름 ('userId'와 일치)
+      as: 'user'})  // Post 객체에서 연관된 User 객체에 접근할 때 사용할 별칭 (예: post.user)
   };
 
   return Post;
