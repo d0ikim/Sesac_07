@@ -2,22 +2,19 @@ const jwt = require('jsonwebtoken')
 const SECRET_KEY = "sesac"
 
 module.exports = function (req,res,next){
+  // 토큰 인증 함수(라우터.js 에서 authenticateToken라는 이름으로 불려서 씀)
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
-  req.password = "1234";
-
-  if(req.password !== "1234"){
-    return next(new Error("password"))
+  const verifiedToken = verifyToken(token)
+  if(!verifyToken(token)){
+    return next(new Error("TokenNotMatched"))
   }
   
-  if(!verifyToken(token)){
-    return next(new Error("Need login"))
-  }
-  const verifiedToken = verifyToken(token)
-  req.user = verifiedToken;
+  req.user = verifiedToken.userId;
   next();
 }
+
 function verifyToken(token){
   try{
     return jwt.verify(token, SECRET_KEY);

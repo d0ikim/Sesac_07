@@ -1,7 +1,65 @@
-GET http://localhost:3000/user
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiLtmY3quLjrj5kiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0OTYzMDE4MSwiZXhwIjoxNzQ5NjQ4MTgxfQ.2oAbJqkXVY4Ck-0N5ks3F166lyxaYXogMCDGqpXbCeg
+@jwt = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTc0OTgwNTYwMywiZXhwIjoxNzQ5ODQ4ODAzfQ.7AkGy7ODmzFSdwuODBt7Gus1wDTrV0L9zGgcHoBmnAw
+
+### 회원가입
+POST http://localhost:3000/sign-up
+Content-Type: application/json
+
+{
+  "email": "testuser6@example.com",
+  "password": "12345678",
+  "nickname": "테스트유저"
+}
 
 
+### 로그인
+POST http://localhost:3000/login
+Content-Type: application/json
 
-###
-GET http://localhost:3000/login
+{
+  "email": "testuser6@example.com",
+  "password": "12345678"
+}
+
+
+### 1. 게시글 생성 API (테스트6 유저로 로그인된 상태임)
+POST http://localhost:3000/posts
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+{
+  "title": "첫빠",
+  "content": "11111"
+}
+
+### 1. 게시글 생성 API
+POST http://localhost:3000/posts
+Content-Type: application/json
+Authorization: Bearer {{jwt}}
+
+{
+  "title": "두번째글",
+  "content": "하이"
+}
+
+### 2. 전체 게시글 조회 API
+GET http://localhost:3000/posts
+
+
+### 3. 특정 게시글 조회 API
+GET http://localhost:3000/posts/8
+
+
+### 4. 게시글 수정 API
+PUT http://localhost:3000/posts/8
+Content-Type: application/json
+
+{
+  "userId": 2,
+  "title": "글수정함",
+  "content": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋ"
+}
+
+
+### 5. 게시글 삭제 API
+DELETE http://localhost:3000/posts/4
+Authorization: Bearer {{jwt}}
