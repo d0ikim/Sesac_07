@@ -1,3 +1,4 @@
+// 인증(Authenticate) 파일
 const jwt = require('jsonwebtoken')
 const SECRET_KEY = "sesac"
 
@@ -19,6 +20,7 @@ function verifyToken(token){
   try{
     return jwt.verify(token, SECRET_KEY);
   } catch(e){
+    console.error("JWT Error:", e.message); // 이거 추가!
     return false
   }
 }

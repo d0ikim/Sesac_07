@@ -1,17 +1,17 @@
-@jwt = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTc0OTgwNTYwMywiZXhwIjoxNzQ5ODQ4ODAzfQ.7AkGy7ODmzFSdwuODBt7Gus1wDTrV0L9zGgcHoBmnAw
+@jwt = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjYsImlhdCI6MTc1MDA1MzY4MiwiZXhwIjoxNzUwMDk2ODgyfQ.8FhujjXJbS6Xgs5jdNXVRiSdDXrUeboYgy3hOYP07gA
 
 ### 회원가입
 POST http://localhost:3000/sign-up
 Content-Type: application/json
 
 {
-  "email": "testuser6@example.com",
+  "email": "testuser9@example.com",
   "password": "12345678",
   "nickname": "테스트유저"
 }
 
 
-### 로그인
+### 로그인(토큰 발급)
 POST http://localhost:3000/login
 Content-Type: application/json
 
@@ -24,17 +24,19 @@ Content-Type: application/json
 ### 1. 게시글 생성 API (테스트6 유저로 로그인된 상태임)
 POST http://localhost:3000/posts
 Content-Type: application/json
-Authorization: Bearer {{jwt}}
+Authorization: Bearer {{jwt}} 
+# 토큰인증인가 필요시 윗줄 추가해서 http 요청해야함
 
 {
-  "title": "첫빠",
-  "content": "11111"
+  "title": "세 번째 게시글0616",
+  "content": "2025.06.16"
 }
 
 ### 1. 게시글 생성 API
 POST http://localhost:3000/posts
 Content-Type: application/json
 Authorization: Bearer {{jwt}}
+# 토큰인증인가 필요시 윗줄 추가해서 http 요청해야함
 
 {
   "title": "두번째글",
@@ -46,20 +48,22 @@ GET http://localhost:3000/posts
 
 
 ### 3. 특정 게시글 조회 API
-GET http://localhost:3000/posts/8
+GET http://localhost:3000/posts/11
 
 
-### 4. 게시글 수정 API
-PUT http://localhost:3000/posts/8
+### 4. 게시글 수정 API(테스트6 유저의 글만 가능)
+PUT http://localhost:3000/posts/12
 Content-Type: application/json
+Authorization: Bearer {{jwt}}
+# 토큰인증인가 필요시 윗줄 추가해서 http 요청해야함
 
 {
-  "userId": 2,
-  "title": "글수정함",
-  "content": "ㅋㅋㅋㅋㅋㅋㅋㅋㅋ"
+  "title": "세 번째 게시글 - 수정본",
+  "content": "수정된 내용입니다."
 }
 
 
-### 5. 게시글 삭제 API
-DELETE http://localhost:3000/posts/4
+### 5. 게시글 삭제 API(테스트6 유저의 글만 가능)
+DELETE http://localhost:3000/posts/11
 Authorization: Bearer {{jwt}}
+# 토큰인증인가 필요시 윗줄 추가해서 http 요청해야함

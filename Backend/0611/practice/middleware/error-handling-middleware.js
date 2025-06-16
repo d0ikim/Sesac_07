@@ -1,12 +1,13 @@
 module.exports = function (err,req,res,next){
-  console.error(err.message)
+  console.error(err.message); // 아래 작성한 에러메시지 출력해주고,
+
   switch(err.message){
     case "InputValidation" :
     case "passwordValidation":
       return res.status(400).send({
       errorMessage : "입력한 요청이 잘못되었습니다."
     })
-    case "existEmail" :
+    case "ExistEmail" :
       return res.status(400).send({
       errorMessage : "가입된 이메일이 있습니다."
     })
@@ -38,6 +39,11 @@ module.exports = function (err,req,res,next){
     case 'PasswordError':
       return res.status(401).send({
         errorMessage: '패스워드가 다릅니다.'
+      })
+
+    case 'NotFoundDeletedPost':
+      return res.status(401).send({
+        errorMessage: '삭제될 게시글이 없습니다.'
       })
 
 
