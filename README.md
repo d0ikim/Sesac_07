@@ -1,6 +1,8 @@
 - HTML
 - CSS
 - JavaScript
+- React
+- 
 - Node.js
 - DB
   - MySQL
