@@ -8,7 +8,7 @@ export const HeaderWrapper = styled(Container)`
   align-items: center;
   backdrop-filter: blur(10px);
   border-radius: 20px;  margin-top: 20px;
-  z-index: 7;
+  z-index : 1;
 `;
 
 export const Logo = styled.div`
@@ -54,10 +54,11 @@ export const SelectWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
-
+  z-index : 2;
   .react-select-container {
     width: 250px;
   }
+  
   
   .react-select__control {
     border-radius: 15px;
@@ -117,4 +118,10 @@ export const SelectWrapper = styled.div`
       background: rgba(102, 126, 234, 0.2);
     }
   }
-`;
+
+  @media (max-width: 768px) {
+    .react-select-container {
+      width: 300px;
+    }
+  }
+`; 

@@ -1,10 +1,9 @@
 import React from 'react'
 import Header from '../components/Header/Header'
 import { HomeWrapper, BackgroundGradient, MainContent, WeatherSection, InfoSection, ForecastSection } from './styles'
-import ThisDay from '../components/Thisday/ThisDay'
+import ThisDay from '../components/ThisDay/ThisDay'
 import ThisDayInfo from '../components/ThisDayInfo/ThisDayInfo'
 import AllDays from '../components/AllDays/AllDays'
-
 
 
 const Home = () => {
@@ -12,7 +11,6 @@ const Home = () => {
     <HomeWrapper>
       <BackgroundGradient>
         <Header />
-
         <MainContent>
           <WeatherSection>
             <ThisDay />
@@ -21,15 +19,14 @@ const Home = () => {
             <ThisDayInfo />
           </InfoSection>
         </MainContent>
-
         <ForecastSection>
           <AllDays />
         </ForecastSection>
-
-
       </BackgroundGradient>
     </HomeWrapper>
   )
 }
+
+
 
 export default Home

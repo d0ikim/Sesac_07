@@ -1,4 +1,3 @@
-// ThisDay.jsx 에 쓸 styled-component CSS 파일
 import styled from "styled-components";
 
 export const ThisDayWrapper = styled.div`
@@ -6,11 +5,11 @@ export const ThisDayWrapper = styled.div`
   max-width: 450px;
   min-height: 350px;
   padding: 30px;
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(20px);
   border-radius: 25px;
-  border: 1px solid rgba(255,255,255,0.2);
-  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -28,6 +27,7 @@ export const Top = styled.div`
     flex-direction: column;
     justify-content: center;
     gap: 10px;
+
     h2 {
       font-weight: 300;
       font-size: 80px;
@@ -43,16 +43,18 @@ export const Top = styled.div`
       margin: 0;
     }
   }
+
   img {
     width: 120px;
     height: 120px;
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
     transition: transform 0.3s ease;
+    
     &:hover {
       transform: scale(1.1);
     }
   }
-`;
+`
 
 export const Bottom = styled.div`
   display: flex;
@@ -65,4 +67,5 @@ export const Bottom = styled.div`
   font-size: 18px;
   line-height: 1.4;
   color: rgba(255, 255, 255, 0.9);
-`;
+
+`

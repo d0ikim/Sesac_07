@@ -1,5 +1,3 @@
-// AllDays.jsx, Day.jsx 에 쓸 styled-component CSS 파일
-
 import styled from "styled-components";
 import { Container } from "../../Container.styles";
 
@@ -17,6 +15,7 @@ export const AllDaysWrapper = styled(Container)`
   gap: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease
 `
+
 export const DayWrapper = styled.div`
   background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(10px);
@@ -29,17 +28,20 @@ export const DayWrapper = styled.div`
   padding: 20px;
   transition: all 0.3s ease;
 `
+
 export const TopPart = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 15px;
+
   > div {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     gap: 8px;
     flex: 1;
+    
     h2 {
       font-weight: 600;
       font-size: 20px;
@@ -48,6 +50,7 @@ export const TopPart = styled.div`
       margin: 0;
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
+    
     h3 {
       font-weight: 400;
       font-size: 16px;
@@ -55,6 +58,7 @@ export const TopPart = styled.div`
       margin: 0;
     }
   }
+
   img {
     width: 50px;
     height: 50px;
@@ -62,6 +66,8 @@ export const TopPart = styled.div`
     transition: transform 0.3s ease;
   }
 `
+
+
 export const BottomPart = styled.div`
   display: flex;
   justify-content: space-between;
@@ -69,6 +75,7 @@ export const BottomPart = styled.div`
   gap: 10px;
   padding-top: 15px;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
+
   h2 {
     font-weight: 600;
     font-size: 24px;
@@ -77,6 +84,7 @@ export const BottomPart = styled.div`
     margin: 0;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   }
+
   h3 {
     font-weight: 500;
     font-size: 20px;
@@ -84,4 +92,4 @@ export const BottomPart = styled.div`
     color: rgba(255, 255, 255, 0.7);
     margin: 0;
   }
-`;
+`; 

@@ -1,18 +1,18 @@
 import React from 'react'
 
+import { useTime } from '../../utils/useTime';
+
 const CurrentTime = () => {
-  const time = new Intl.DateTimeFormat("ko-KR", 
+  const currentTime = useTime(1000);
+  const time = new Intl.DateTimeFormat("ko-KR",
     {
       hour: "numeric",
       minute: "numeric",
     }
-  ).format( // 위 설정한 포맷으로 바꿈
-    new Date()  // 현재시간
+  ).format(
+    currentTime
   );
-
-  return (
-    <div>{time}</div>
-  )
+  return <div>{time}</div>;
 }
 
 export default CurrentTime
