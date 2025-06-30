@@ -2,15 +2,17 @@ import React from 'react'
 import { ThisDayWrapper, Top, Bottom } from './styles';
 import CurrentTime from './CurrentTime';
 import useWeather from '../../utils/useWeather.js';
+import { useParams } from 'react-router-dom';
 
 const ThisDay = () => {
-  const { data, isLoading } = useWeather("seoul");
+  const { id } = useParams();
+  console.log(id)
+  const { data, isLoading } = useWeather(id ? `${id}`:"Seoul");
 
   const temperature = Math.round(data?.main.temp || 0);
   const cityName = data?.name;
 
   const weatherIcon = data?.weather[0].main;
-
   let imageSrc = "./images/weatherIcons/clear-sky.svg";
 
   if (weatherIcon === "Clear") {
