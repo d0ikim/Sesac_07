@@ -1,81 +1,100 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { users } from '../utils/data';
+import { initialUsers } from '../../utils/data'
+import { useAuth } from '../../context/AuthContext';
+import { userAPI } from '../../utils/data';
 
-const LoginPage = ({ currentUser, onLogin }) => {
+function LoginPage() {
+
   const navigate = useNavigate();
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  useEffect(()=>{
-    if(currentUser){
-      navigate('/todo');
-    }
-  },[currentUser,navigate])
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const { currentUser, login } = useAuth();
+
+  useEffect(() => {
+    if (currentUser) {
+      navigate('/todo')
+    }
+
+  }, [currentUser, navigate])
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // 로그인 검사
-    // 입력 값이 없는 경우
-    if(!email || !password){
-      setErrorMessage('모든 항목을 입력해주세요');
-      return; // 나가기
+    setLoading(true);
+    if (!email || !password) {
+      setErrorMessage('모든 항목을 입력해주세요.');
+      setLoading(false)
+      return;
     }
 
-    const foundUser = users.find(user => 
-      user.email === email &&
-      user.password === password
-    )
-
-    if(foundUser){
-      onLogin({ email: foundUser.email });
-      navigate('/todo');
-    } else{
-      // 로그인 실패!
+    try {
+      const result = await userAPI.login(email, password)
+      if (result.success) {
+        login({ email: result.user.email })
+        navigate('/todo')
+      }
+    } catch (e) {
       setErrorMessage('잘못된 이메일 또는 비밀번호입니다.');
-      return; // 나가기
+      return;
+    } finally {
+      setLoading(false)
     }
   }
 
-  const handleTestAccountClick = (email,password) => {
+  const handleTestAccountClick = (email, password) => {
     setEmail(email);
     setPassword(password);
     setErrorMessage('');
-  }
+  };
 
   return (
-    <div class="d-flex align-items-center justify-content-center min-vh-100 bg-light">
-      <div class="card p-4 shadow-sm" style={{maxWidth: '400px', width:'100%'}}>
-        <h2 class="card-title text-center mb-4">로그인</h2>
+    <div className="d-flex align-items-center justify-content-center min-vh-100 bg-light">
+      <div className="card p-4 shadow-sm" style={{ maxWidth: '400px', width: '100%' }}>
+        <h2 className="card-title text-center mb-4">로그인</h2>
         <form onSubmit={handleSubmit}>
-          <div class="mb-3">
-            <label for="email" class="form-label">이메일 주소</label>
-            <input 
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">이메일 주소</label>
+            <input
               type="email"
               className="form-control"
               placeholder="name@example.com"
-              onChange={(e)=>setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               value={email}
-            />
+              disabled={loading}
+            ></input>
           </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">비밀번호</label>
+          <div className="mb-3">
+            <label htmlFor="password" className="form-label">비밀번호</label>
             <input
               type="password"
               className="form-control"
               id="password"
               placeholder="비밀번호"
-              onChange={(e)=>setPassword(e.target.value)}
               value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
             />
           </div>
-          <p id="errorMessage" class="text-danger text-center"></p>
+          <p id="errorMessage" className="text-danger text-center"></p>
 
-          <div class="d-grid">
-            <button type="submit" class="btn btn-primary">로그인</button>
+          <div className="d-grid">
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={loading}>
+              {loading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true">
+                  </span>
+                  로그인 중...
+                </>
+              ) : "로그인"}
+
+            </button>
           </div>
         </form>
 

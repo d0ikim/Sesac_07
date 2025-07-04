@@ -1,10 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-function TodoCard({ todo }) {
+const TodoCard = ({ todo, onToggleComplete, onDeleteTodo }) => {
   return (
     <div className={`card h-100 shadow-sm ${todo.isCompleted ? 'bg-light' : ''}`} >
       <div className='card-body d-flex flex-column'>
-        <h5 className={`card-title ${todo.isCompleted ? 'text-decoration-line-through text-muted' : ''} `}>
+        <h5 className={`card-title ${todo.isCompleted ?
+          'text-decoration-line-through text-muted' : ''} `}>
           {todo.title}
         </h5>
         {
@@ -19,10 +20,11 @@ function TodoCard({ todo }) {
           <div className='d-flex gap-2 align-items-center'>
             <div className='form-check form-switch'>
               <input
+                className='form-check-input'
                 type="checkbox"
                 checked={todo.isCompleted}
                 id={`toggle-${todo.id}`}
-                disabled
+                onChange={() => onToggleComplete(todo.id)}
               />
               <label className='form-check-lable small' htmlFor={`toggle-${todo.id}`}>
                 상태 변경
@@ -30,15 +32,15 @@ function TodoCard({ todo }) {
             </div>
             <button
               className='btn btn-outline-secondary btn-sm'
-              disabled
-              type='button'>
+              type='button'
+              onClick={() => onDeleteTodo(todo.id)}>
               삭제
             </button>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TodoCard
+export default TodoCard;

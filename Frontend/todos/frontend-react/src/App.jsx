@@ -1,51 +1,52 @@
+import React from 'react';
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import LoginPage from './pages/auth/LoginPage';
-import TodoPage from './pages/todos/TodoPage'
-import './assets/styles/App.css'
-import { useEffect, useState } from "react";
+import TodoPage from './pages/todos/TodoPage';
+import './assets/styles/App.css';
+import { AuthProvider, useAuth } from "./context/AuthContext";
+import { TodoProvider } from "./context/TodoContext";
 
-function App() {
-  const [currentUser, setCurrentUser] = useState(null);
-  useEffect(()=>{
-    const user = localStorage.getItem('currentUser');
-    if (user) {
-      setCurrentUser(JSON.parse(user));
+import {QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
+      retry : 3,
+      refetchOnWindowFocus: false,
     }
-  },[])
-
-  const login = (userData)=>{
-    setCurrentUser(userData);
-    localStorage.setItem(
-      'currentUser',
-      JSON.stringify(userData)
-    );
   }
+})
 
-  const logout = ()=>{
-    setCurrentUser(null);
-    localStorage.removeItem('currentUser');
-  }
+const AppRoutes = () => {
+  const { loading } = useAuth();
+
+  // if (!loading) {
+  //   return <div>Loading...</div>;
+  // }
 
   return (
-    <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<LoginPage
-          currentUser={currentUser}
-          onLogin={login} />}
-          />
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/todo" element={<TodoPage />} />
+      <Route path="/" element={<LoginPage replace />}
+      />
+    </Routes>
+  )
+}
 
-          <Route path="/todo" element={<TodoPage
-          currentUser={currentUser}
-          onLogout={logout}/>}
-          />
-
-          <Route path="*" element={<LoginPage
-          currentUser={currentUser}
-          onLogin={login} 
-          replace />}
-          />
-        </Routes>
-    </BrowserRouter>
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <AuthProvider>
+          <TodoProvider>
+            <AppRoutes />
+          </TodoProvider>
+        </AuthProvider>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 }
 

@@ -1,40 +1,38 @@
 import React, { useState } from 'react'
-import { todos } from '../../pages/utils/data';
+import {initialTodos} from '../../utils/data'
 
-function TodoForm({ show, onClose, onAddTodo }) {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [isCompleted, setIsCompleted] = useState(false);
+const TodoForm = ({ show, onClose, onAddTodo }) => {
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [isCompleted, setIsCompleted] = useState(false)
 
 
-  const handleSubmit = (e)=>{
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if(!title.trim()){
-      alert("제목 입력해주세요");
+    if (!title.trim()) {
+      alert("제목 입력해주세요")
       return;
     }
+
     const newTodo = {
-      id: todos.reduce((maxId, todos)=> Math.max(maxId, todos.id)+1, 0),
       title,
       description,
       isCompleted
     }
-    onAddTodo(newTodo);
-    handleClose();
+    onAddTodo(newTodo)
+    handleClose()
   }
-
   const handleClose = () => {
     setTitle('');
     setDescription('');
     setIsCompleted(false);
-    onClose();
-  } 
+    onClose()
+  }
 
   if (!show) return null;
-
   return (
     <>
-    
+
       <div className="modal fade show" style={{ display: 'block' }} tabIndex="-1" aria-labelledby="todoModalLabel" aria-hidden="true">
         <div className="modal-dialog">
           <div className="modal-content">
