@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/ui/Header';
 import TodoList from '../../components/todo/TodoList';
@@ -10,24 +10,49 @@ import TodoStats from '../../components/ui/TodoStats';
 
 import { useTodo } from '../../context/TodoContext';
 import { useAuth } from '../../context/AuthContext';
+import { useAddTodo, useToggleTodo, useDeleteTodo } from '../../hooks/useTodos';
 
 function TodoPage() {
 
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
+  const [currentFilter, setCurrentFilter] = useState('all')
+
+  const [showTodoForm, setShowTodoForm] = useState(false);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [todoToDelete, setTodoToDelte] = useState(null)
+
+  const { todos, isLoading, error, stats} = useTodos()
+
+  const addTodoMutation = useAddTodo();
+  const toggleTodoMutation = useToggleTodo();
+  const deleteTodoMutation = useDeleteTodo();
+
+  const handleFiltterChange = (filter) => {
+    setCurrentFilter(filter);
+  };
+
+  // 필터 변경 처리 함수
+  const handleFilterChange = (filter) => {
+    setCurrentFilter(filter)
+  }
+
+  // 할 일 삭제 시작
+  const handleDeleteTodo = (todoId) => {
+    setTodoToDelte(todoId);
+    setShowConfirmDialog(true);
+  }
+
+  // 삭제 취소 처리 함수
+  const handleCancelDelete = () => {
+    setTodoToDelte(null);
+    setShowConfirmDialog(false);
+  }
 
   const {
-    todos,
-    currentFilter,
-    showTodoForm,
-    showConfirmDialog,
-
     handleToggleComplete,
-    handleDeleteTodo,
     handleConfirmDelete,
-    handleCancelDelete,
     handleAddTodo,
-    handleFilterChange,
     openTodoForm,
     closeTodoForm } = useTodo();
 

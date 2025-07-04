@@ -14,27 +14,15 @@ export const TodoProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  /** 최초에 한 번 실행
-   * 리액트 클래스 컴포넌트 -> 함수형 컴포넌트
-   * 훅은 함수형 컴포넌트에서 상태(state)와 생명주기(lifecycle)기능을 사용할 수 있게 해주는 함수입니다.
+  /** 커스텀 훅
+   * 커스텀 훅은 여러컴포넌트에서 반복되는 로직
+   * (예: 데이터 fetch, 폼 관리 등)을 재사용하기 위해 직접 만드는 훅
+   * 꼭 use로 시작해야함 (예: useFetch)
    * 
-   * 함수형 컴포넌트의 라이프사이클(useEffect)
-   * 함수형 컴포넌트에서는 훅으로 라이프 사이클을 제어 할 수 있게 제공
    * 
-   * useEffect(() => {
-   *  컴포넌트가 마운트 될 때 실행
-   * }, [])
-   * 
-   * useEffect(() => {
-   *  컴포넌트가 업데이트 될 때 실행
-   *  componentDidUpdate()
-   * }, [todos])
-   * 
-   * useEffect(() => {
-   *  return () => {
-   *    clearInterval(id)
-   *  }
-   * }, [todos])
+   * - 라이프사이클은 컴포넌트의 생애주기(생성-업데이트-소멸) 전체를 의미
+   * - 클래스 컴포넌트는 라이프사이클 메서드, 함수형 컴포넌트는 useEffect로 제어
+   * - 적절한 시점에 필요한 작업(데이터 fetch. 정리 등)을 넣는 것이 중요
    */
   useEffect(() => {
     loadTodos()
