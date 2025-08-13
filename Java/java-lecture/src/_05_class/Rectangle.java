@@ -1,11 +1,24 @@
 package _05_class;
 
 public class Rectangle {
-    int width;
-    int height;
+    private int width;
+    private int height;
 
-    public Rectangle(int w, int h) {
+    public Rectangle(int w) {
         this.width = w;
+    }
+
+    public int getWidth(){
+        return this.width;
+    }
+    public int getHeight(){
+        return this.height;
+    }
+
+    public void setWidth(int w){
+        this.width = w;
+    }
+    public void setHeight(int h){
         this.height = h;
     }
 
