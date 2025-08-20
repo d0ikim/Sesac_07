@@ -9,8 +9,24 @@ class Calculator<T extends Number>{
         this.num2 = num2;
     }
 
+    public T getNum1() {
+        return num1;
+    }
+    public T getNum2() {
+        return num2;
+    }
+    public void setNum1(T num1) {
+        this.num1 = num1;
+    }
+    public void setNum2(T num2) {
+        this.num2 = num2;
+    }
+
     public double add(){
-        return this.num1.doubleValue() + this.num2.doubleValue();
+        // double sum = (double) num1 + (double)num2;   // exception 발생
+        // Number는 double 로 캐스팅 불가
+
+        return getNum1().doubleValue() + getNum2().doubleValue();
     }
 }
 
