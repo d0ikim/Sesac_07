@@ -5,6 +5,8 @@
 - TypeScript
 
 - Node.js
+- Java
+- Spring
 - DB
   - MySQL
     - Prisma (ORM)
