@@ -8,6 +8,6 @@ public class SpringBootDefaultApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootDefaultApplication.class, args);
+        
 	}
-
 }
