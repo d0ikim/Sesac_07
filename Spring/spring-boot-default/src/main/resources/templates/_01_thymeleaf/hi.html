@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- 네임스페이스 정의
+- "th" 접두사를 타임리프 네임스페이스 연결
+- html 태그에서 "th:*" 형태의 속성을 사용할 수 있게 선언
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p th:text="'안녕하세요. ' + ${msg}">안녕 반가워</p>
+</body>
+</html>
