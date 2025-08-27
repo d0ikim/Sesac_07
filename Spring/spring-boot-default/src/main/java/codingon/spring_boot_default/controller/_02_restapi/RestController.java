@@ -1,6 +1,7 @@
 package codingon.spring_boot_default.controller._02_restapi;
 
 import codingon.spring_boot_default.dto.UserDTO;
+import codingon.spring_boot_default.vo.UserVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -204,4 +205,50 @@ public class RestController {
         return userDTO.getName()+" "+userDTO.getAge();
     }
 
+
+    /// ////////////////////////// VO //////////////////////////////////////////
+//    #11
+    @GetMapping("vo/res1")
+    @ResponseBody
+    public String voRes1(@ModelAttribute UserVO userVO) {
+//        @ModelAttribute UserVO userVO
+//        - 요청 파라미터를 VO 객체에 바인딩
+        
+//        참고. 브라우저에서 응답이 "null 0"으로 도착하는 이유는?
+//        - @ModelAttribute는 setter를 이용해 객체에 값을 주입;
+//        - VO 객체에는 setter가 없으므로 폼에서 전송된 데이터가 주입되지 않음
+//            -> 따라서 name, age 필드는 초기화되지 않은 상태인 null, 0 으로 남게 됨
+        System.out.println("[GET] userVO (name) = "+userVO.getName());
+        System.out.println("[GET] userVO (age) = "+userVO.getAge());
+
+        return userVO.getName()+" "+userVO.getAge();
+    }
+
+//    #12
+    @PostMapping("/vo/res2")
+    @ResponseBody
+    public String voRes2(UserVO userVO) {
+//        #11 과 동일한 원리
+        System.out.println("[POST] userVO (name) = "+userVO.getName());
+        System.out.println("[POST] userVO (age) = "+userVO.getAge());
+
+        return userVO.getName()+" "+userVO.getAge();
+    }
+
+//    #13
+    @PostMapping("/vo/res3")
+    @ResponseBody
+    public String voRes3(@RequestBody UserVO userVO) {
+//        #10 과 동일한 원리로 에러
+//        @RequestBody UserVO userVO
+//         -> 요청의 본문 데이터를 VO 객체로 변환 시도
+        
+//        올바르게 사용?
+//        1. @RequestBody 어노테이션 제거 -> @ModelAttribute 사용
+//        2. 클라이언트 측에서 js를 이용해 폼 데이터를 JSON 으로 변환해서 "동적 폼 전송" 구현
+        System.out.println("[POST] userVO (name) = "+userVO.getName());
+        System.out.println("[POST] userVO (age) = "+userVO.getAge());
+
+        return userVO.getName()+" "+userVO.getAge();
+    }
 }
