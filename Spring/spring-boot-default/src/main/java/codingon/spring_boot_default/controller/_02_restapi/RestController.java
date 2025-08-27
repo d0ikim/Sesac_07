@@ -1,5 +1,6 @@
 package codingon.spring_boot_default.controller._02_restapi;
 
+import codingon.spring_boot_default.dto.UserDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -92,7 +93,8 @@ public class RestController {
         return "_02_restapi/res";
     }
 
-    /// //////////////////////////////////////////////////////////////////////////////////////////
+
+    /// /////////////////////////////// POST ///////////////////////////////////////
 //    POST 요청
 //    #5 (required=true) : /post/res1
     @PostMapping("post/res1")
@@ -143,6 +145,63 @@ public class RestController {
 
 //        템플릿 엔진(res.html)이 아닌 문자열 그 자체를 응답시킴
         return name + " " + age;    // 화면에 html이 아닌 문자열 [김도이 27] 만 뜸
+    }
+
+
+    /// ////////////////////////// DTO //////////////////////////////////////////
+//    #8 : /dto/res1?name=김도이&age=27
+    @GetMapping("/dto/res1")
+    @ResponseBody
+//    @ModelAttribute UserDTO userDTO
+//    - 요청 파라미터를 DTO 객체에 바인딩
+//    - 폼 input name 속성들 (name, age)이 userDTO 필드명과 일치하면 자동 매핑
+//        -> 매핑? dto의 setter를 사용
+//        -> ?name=s&age=1 -> setName("s"), setAge(1)
+    public String dtoRes1(@ModelAttribute UserDTO userDTO) {
+//        req ex) /dto/res1?name=김도이&age=27
+        System.out.println("[GET] userDTO (name) = "+userDTO.getName());
+        System.out.println("[GET] userDTO (age) = "+userDTO.getAge());
+
+        return userDTO.getName()+" "+userDTO.getAge();
+    }
+
+//    #9 : /dto/res2
+    @PostMapping("/dto/res2")
+    @ResponseBody
+//    @ModelAttribute 어노테이션 생략 가능
+//    - 파라미터의 UserDTO 타입 앞에 아무것도 없으면 @ModelAttribute 어노테이션 자동 추가됨
+//    - POST 방식이므로 폼 데이터를 자동으로 UserDTO에 바인딩
+
+    public String dtoRes2(UserDTO userDTO) {
+        System.out.println("[POST] userDTO (name) = "+userDTO.getName());
+        System.out.println("[POST] userDTO (age) = "+userDTO.getAge());
+
+        return userDTO.getName()+" "+userDTO.getAge();
+    }
+
+//    #10 : /dto/res3
+    @PostMapping("/dto/res3")
+    @ResponseBody
+//    @RequestBody 어노테이션
+//    - 요청의 본문 (req.body)에 있는 데이터를 읽어와서 객체에 매핑
+//        -> 매핑? 필드에 값을 주입
+//    - 반환 값을 HTTP 본문에 직접 작성하게 함
+//    - (전제 조건) 단!!!!! 요청의 형식이 JSON 또는 XML 일 때 사용
+    
+//    415 에러 발생
+//    : 서버가 클라이언트로부터 받은 요청의 미디어타입(Content-Type)을 지원하지 않거나 이해할 수 없는 경우 발생
+    
+//    즉 해당 요청은 MIME Type이 "application/x-www-form-urlencoded" (JSON이나 XML이 아님)
+//    -> @RequestBody 어노테이션 사용시 오류 발생됨
+
+//    오류가 안나게 하려면?
+//    1. "일반 폼 전송"을 하고 있으니 @ModelAttribute를 사용 -> #9 번 폼
+//    2. 클라이언트 측에서 js코드를 사용해 폼 데이터를 JSON 변환하여 전송 -> 동적 폼 전송
+    public String dtoRes22(@RequestBody UserDTO userDTO) {
+        System.out.println("[POST] userDTO (name) = "+userDTO.getName());
+        System.out.println("[POST] userDTO (age) = "+userDTO.getAge());
+
+        return userDTO.getName()+" "+userDTO.getAge();
     }
 
 }
