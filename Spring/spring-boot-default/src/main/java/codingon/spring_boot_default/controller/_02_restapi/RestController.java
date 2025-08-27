@@ -2,9 +2,7 @@ package codingon.spring_boot_default.controller._02_restapi;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class RestController {
@@ -71,7 +69,7 @@ public class RestController {
         return "_02_restapi/res";
     }
 
-//    #4
+//    #4 : http://localhost:8080/get/res4/성춘향/21, /get/res4/성춘향
 //    선택적으로 받아오는 path variable이 있으면, {} 안에 경로 여러개 설정
 //    path variable 중에서 name은 필수경로변수, age는 선택경로변수 라면?
 //    - required = false 옵션을 선택경로변수에서는 사용해야 하고,
@@ -93,4 +91,58 @@ public class RestController {
         
         return "_02_restapi/res";
     }
+
+    /// //////////////////////////////////////////////////////////////////////////////////////////
+//    POST 요청
+//    #5 (required=true) : /post/res1
+    @PostMapping("post/res1")
+    public String postRes1(@RequestParam String name,
+                           @RequestParam int age,
+                           Model model) {
+        System.out.println("name = "+name);
+        System.out.println("age = "+age);
+
+        model.addAttribute("name",name);
+        model.addAttribute("age",age);
+
+        return "_02_restapi/res";
+    }
+
+//    #6 (required=false) : /post/res2
+    @PostMapping("post/res2")
+    public String postRes2(@RequestParam String name,
+                           @RequestParam(required = false) Integer age,
+                           Model model) {
+        System.out.println("name = "+name);
+        System.out.println("age = "+age);
+
+        model.addAttribute("name",name);
+        model.addAttribute("age",age);
+
+        return "_02_restapi/res";
+    }
+
+//    #1~6 폼까지는 항상 Template View를 반환
+//    하지만, Spring Boot를 API서버로 활용하고자 데이터자체를 응답하고 싶다면?
+//    => @ResponseBody 어노테이션 사용
+
+//    #7 : : /post/res3
+    @PostMapping("/post/res3")
+    @ResponseBody   // 메서드의 반환값을 응답 본문(response body)에 직접 쓰도록 지시
+//    @ResponseBody 어노테이션
+//    - 응답 시 객체를 JSON 등으로 리턴할 때 사용
+//    - 즉, 응답 객체를 전달 (node express res.send() 와 유사)
+    public String postRes2(@RequestParam String name,
+                           @RequestParam int age,
+                           Model model) {
+        System.out.println("name = "+name);
+        System.out.println("age = "+age);
+
+        model.addAttribute("name",name);
+        model.addAttribute("age",age);
+
+//        템플릿 엔진(res.html)이 아닌 문자열 그 자체를 응답시킴
+        return name + " " + age;    // 화면에 html이 아닌 문자열 [김도이 27] 만 뜸
+    }
+
 }
