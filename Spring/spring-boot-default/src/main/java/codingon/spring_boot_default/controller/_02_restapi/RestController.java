@@ -2,6 +2,7 @@ package codingon.spring_boot_default.controller._02_restapi;
 
 import codingon.spring_boot_default.dto.UserDTO;
 import codingon.spring_boot_default.vo.UserVO;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -250,5 +251,104 @@ public class RestController {
         System.out.println("[POST] userVO (age) = "+userVO.getAge());
 
         return userVO.getName()+" "+userVO.getAge();
+    }
+
+
+    /// ////////////////////////// DTO with Axios //////////////////////////////////////
+//    #14-1 이름:김도이, 나이:27
+    @GetMapping("/axios/res1")
+    @ResponseBody
+    public String axiosRes1(@RequestParam String name, @RequestParam String age) {
+        System.out.println("[GET] axios (name) = "+name);
+        System.out.println("[GET] axios (age) = "+age);
+
+        return "이름:"+name+", 나이:"+age;
+    }
+
+//    #14-2 이름:김도이, 나이:27
+    @GetMapping("/axios/res2")
+    @ResponseBody
+    public String axiosRes2(UserDTO userDTO) {
+        System.out.println("[GET] axios and dto (name) = "+userDTO.getName());
+        System.out.println("[GET] axios and dto (age) = "+userDTO.getAge());
+
+        return "이름:"+userDTO.getName()+", 나이:"+userDTO.getAge();
+    }
+
+//    #15-1 Request failed with status code 400
+    @PostMapping("/axios/res3")
+    @ResponseBody
+    public String axiosRes3(@RequestParam String name, @RequestParam String age) {
+        System.out.println("[POST] axios (name) = "+name);
+        System.out.println("[POST] axios (age) = "+age);
+
+        return "이름:"+name+", 나이:"+age;
+    }
+
+//    #15-2 이름:null, 나이:0
+    @PostMapping("/axios/res4")
+    @ResponseBody
+    public String axiosRes4(UserDTO userDTO) {
+        System.out.println("[POST] axios and dto (name) = "+userDTO.getName());
+        System.out.println("[POST] axios and dto (age) = "+userDTO.getAge());
+
+        return "이름:"+userDTO.getName()+", 나이:"+userDTO.getAge();
+    }
+
+//    #15-3 이름:김도이, 나이:27
+    @PostMapping("/axios/res5")
+    @ResponseBody
+    public String axiosRes5(@RequestBody UserDTO userDTO) {
+        System.out.println("[POST] axios and dto (name) = "+userDTO.getName());
+        System.out.println("[POST] axios and dto (age) = "+userDTO.getAge());
+
+        return "이름:"+userDTO.getName()+", 나이:"+userDTO.getAge();
+    }
+
+
+    /// ////////////////////////// VO with Axios //////////////////////////////////////
+//    #16-1 이름: 김도이, 나이: 27
+    @GetMapping("/axios/vo/res1")
+    @ResponseBody
+    public String axiosVoRes1(@RequestParam String name, @RequestParam String age) {
+        System.out.println("[GET] axios (name) = " + name);
+        System.out.println("[GET] axios (age) = " + age);
+        return "이름: " + name + ", 나이: " + age;
+    }
+
+//    #16-2 이름: null, 나이: 0
+    @GetMapping("/axios/vo/res2")
+    @ResponseBody
+    public String axiosVoRes2(UserVO userVO) {
+        System.out.println("[GET] axios and vo (name) = " + userVO.getName());
+        System.out.println("[GET] axios and vo (age) = " + userVO.getAge());
+        return "이름: "+ userVO.getName() + ", 나이: "+ userVO.getAge();
+    }
+
+//    #17-1 Request failed with status code 400
+    @PostMapping("/axios/vo/res3")
+    @ResponseBody
+    public String axiosVoRes3(@RequestParam String name, @RequestParam String age) {
+        System.out.println("[POST] axios (name) = " + name);
+        System.out.println("[POST] axios (age) = " + age);
+        return "이름: " + name + ", 나이: " + age;
+    }
+
+//    #17-2 이름: null, 나이: 0
+    @PostMapping("/axios/vo/res4")
+    @ResponseBody
+    public String axiosVoRes4(UserVO userVO){
+        System.out.println("[POST] axios and vo (name) = " + userVO.getName());
+        System.out.println("[POST] axios and vo (age) = " + userVO.getAge());
+        return "이름: " + userVO.getName() + ", 나이: " + userVO.getAge();
+    }
+
+//    #17-3 이름: 김도이, 나이: 27
+    @PostMapping("/axios/vo/res5")
+    @ResponseBody
+    public String axiosVoRes5(@RequestBody UserVO userVO) {
+        System.out.println("[POST] axios and vo (name) = " + userVO.getName());
+        System.out.println("[POST] axios and vo (age) = " + userVO.getAge());
+        return "이름: " + userVO.getName() + ", 나이: " + userVO.getAge();
     }
 }
