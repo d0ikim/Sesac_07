@@ -13,5 +13,4 @@ public class Main {
         service.setNotification(new SMSNotificationService());
         service.processOrder();
     }
-
 }
