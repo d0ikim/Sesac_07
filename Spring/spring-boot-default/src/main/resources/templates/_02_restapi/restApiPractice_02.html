@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>폼 전송 - 실습</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<form>
+    <button type="button" onclick="sendData()">전송</button><br><br>
+
+    이름 <input type="text" id="name"><br>
+    성별 <input type="radio" name="gender" value="남자"> 남자
+    <input type="radio" name="gender" value="여자" checked> 여자<br>
+    생년월일:
+    <select id="year"></select> 년
+    <select id="month"></select> 월
+    <select id="day"></select> 일<br>
+    관심사
+    <input type="checkbox" name="interest" value="여행" checked> 여행
+    <input type="checkbox" name="interest" value="패션"> 패션
+    <input type="checkbox" name="interest" value="음식" checked> 음식
+</form>
+
+<script>
+    // 옵션 생성 (1900~올해)
+    const ySel = document.getElementById('year');
+    const mSel = document.getElementById('month');
+    const dSel = document.getElementById('day');
+    const nowY = new Date().getFullYear();
+    for (let y = 1900; y <= nowY; y++) ySel.add(new Option(y, y));
+    for (let m = 1; m <= 12; m++) mSel.add(new Option(m, m));
+    for (let d = 1; d <= 31; d++) dSel.add(new Option(d, d));
+
+    function pad2(n){ return String(n).padStart(2,'0'); }
+
+    async function sendData(){
+      const name = document.getElementById('name').value.trim();
+      const gender = document.querySelector('input[name="gender"]:checked')?.value;
+      const birth = `${ySel.value}-${pad2(mSel.value)}-${pad2(dSel.value)}`;
+      const interests = Array.from(document.querySelectorAll('input[name="interest"]:checked'))
+                             .map(el => el.value);
+
+      const payload = { name, gender, birth, interests };
+
+      const res = await axios.post('/signup', payload, {
+        headers: { 'Content-Type':'application/json' }
+      });
+      console.log(res.data); // >>> "김규리회원가입 성공"
+    }
+</script>
+</body>
+</html>
