@@ -269,16 +269,23 @@ public class RestController {
     @GetMapping("/axios/res2")
     @ResponseBody
     public String axiosRes2(UserDTO userDTO) {
+//        UserDTO 객체를 파라미터로 받아 자동으로 데이터 바인딩
+//        - DTO를 사용하여 데이터 "캡슐화"
+//        - 14-1 폼 대비 DTO를 사용하니 코드가 깔끔해지고 데이터 구조를 쉽게 확장
         System.out.println("[GET] axios and dto (name) = "+userDTO.getName());
         System.out.println("[GET] axios and dto (age) = "+userDTO.getAge());
 
         return "이름:"+userDTO.getName()+", 나이:"+userDTO.getAge();
     }
 
-//    #15-1 Request failed with status code 400
+//    #15-1 [ERROR]
     @PostMapping("/axios/res3")
     @ResponseBody
     public String axiosRes3(@RequestParam String name, @RequestParam String age) {
+//        참고. 에러 발생 이유
+//        - 클라이언트에서는 데이터를 "객체"로 전송 -> 서버에서는 @RequestParam으로 받으려고 함
+//        - Axios는 기본적으로는 "json" 형식으로 전송 (Content-Type: application/json)
+//        - 하지만 서버측 코드는 @RequestParam을 사용해 데이터 받기때문에 에러
         System.out.println("[POST] axios (name) = "+name);
         System.out.println("[POST] axios (age) = "+age);
 
@@ -289,6 +296,10 @@ public class RestController {
     @PostMapping("/axios/res4")
     @ResponseBody
     public String axiosRes4(UserDTO userDTO) {
+//        @RequestBody 어노테이션 없이 UserDTO객체로 파라미터를 받고자한 코드
+//        - JSON 데이터가 요청의 본문에 있지만, @RequestBody없는 UserDTO는 주로 "폼 데이터"나 "쿼리 파라미터"를 바인딩하는데 사용
+//        - 즉, @RequestBody 어노테이션이 없으면 Spring은 JSON 요청 본문을 자동으로 UserDTO에 바인딩 해주지 않음
+
         System.out.println("[POST] axios and dto (name) = "+userDTO.getName());
         System.out.println("[POST] axios and dto (age) = "+userDTO.getAge());
 
@@ -296,9 +307,14 @@ public class RestController {
     }
 
 //    #15-3 이름:김도이, 나이:27
+//    이 방식을 최종프로젝트 백엔드 단에서 제일 많이 쓰게 될거라고 함.
     @PostMapping("/axios/res5")
     @ResponseBody
     public String axiosRes5(@RequestBody UserDTO userDTO) {
+//        #15-2 코드의 해결책
+//        @RequestBody UserDTO userDTO 코드가 요청의 본문의 JSON 데이터를 UserDTO 객체로 직접 매핑
+//        -> RESTful API 설계에 적합하며, 클라이언트-서버간 데이터 교환을 명확하게 함
+
         System.out.println("[POST] axios and dto (name) = "+userDTO.getName());
         System.out.println("[POST] axios and dto (age) = "+userDTO.getAge());
 
@@ -320,6 +336,10 @@ public class RestController {
     @GetMapping("/axios/vo/res2")
     @ResponseBody
     public String axiosVoRes2(UserVO userVO) {
+//        @ModelAttribute 어노테이션 생략
+//        - 해당 어노테이션은 setter를 통해 객체에 값을 주입하는 역할
+//        -> VO 객체에는 setter가 없으니 데이터 바인딩이 제대로 이뤄지지 않음
+//        -> 그러므로 모든 필드가 기본값 (참조값은 null, 정수형은 0) 초기화
         System.out.println("[GET] axios and vo (name) = " + userVO.getName());
         System.out.println("[GET] axios and vo (age) = " + userVO.getAge());
         return "이름: "+ userVO.getName() + ", 나이: "+ userVO.getAge();
@@ -329,6 +349,10 @@ public class RestController {
     @PostMapping("/axios/vo/res3")
     @ResponseBody
     public String axiosVoRes3(@RequestParam String name, @RequestParam String age) {
+//        @RequestParam
+//        - 주로, application/x-www-form-urlencoded 형식의 데이터를 처리하는데 사용되는 어노테이션
+//        -> 현재 프론트엔드에서는 JSON 형식으로 요청의 바디에 데이터 보내고 있음
+//        -> 하지만 백엔드에서는 JSON 형식으로 받을 수 있게 매개변수를 설정하지 않았기때문에(x-www-form-urlencoded 형식) 에러
         System.out.println("[POST] axios (name) = " + name);
         System.out.println("[POST] axios (age) = " + age);
         return "이름: " + name + ", 나이: " + age;
@@ -338,6 +362,8 @@ public class RestController {
     @PostMapping("/axios/vo/res4")
     @ResponseBody
     public String axiosVoRes4(UserVO userVO){
+//        @ModelAttribute 생략
+//        - setter를 통해 객체에 값을 주입하나, VO 객체는 setter가 존재하지 않으므로 데이터 바인딩이 안됨
         System.out.println("[POST] axios and vo (name) = " + userVO.getName());
         System.out.println("[POST] axios and vo (age) = " + userVO.getAge());
         return "이름: " + userVO.getName() + ", 나이: " + userVO.getAge();
@@ -347,6 +373,13 @@ public class RestController {
     @PostMapping("/axios/vo/res5")
     @ResponseBody
     public String axiosVoRes5(@RequestBody UserVO userVO) {
+//        @RequestBody
+//        - JSON 형식의 본문을 UserVO 객체로 올바르게 변환하도록 함
+
+//        비교. @ModelAttribute vs. @RequestBody
+//        - @ModelAttribute: setter 함수를 실행해 값을 넣음
+//        - @RequestBody: 각 필드에 직접 접근해서 값을 주입 (setter를 사용하지 않음)
+
         System.out.println("[POST] axios and vo (name) = " + userVO.getName());
         System.out.println("[POST] axios and vo (age) = " + userVO.getAge());
         return "이름: " + userVO.getName() + ", 나이: " + userVO.getAge();
