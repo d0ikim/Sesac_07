@@ -13,7 +13,7 @@ import java.util.List;
 // - @Controller + @ResponseBody 를 결합한 어노테이션
 @RequestMapping("/api/users") // 해당 클래스의 기본 요청 경로를 지정
 public class UserController {
-//    Controller 게층은 Service 게층을 사용 -> 의존
+//    Controller 계층은 Service 게층을 사용 -> 의존
     @Autowired
     private UserService userService;
 

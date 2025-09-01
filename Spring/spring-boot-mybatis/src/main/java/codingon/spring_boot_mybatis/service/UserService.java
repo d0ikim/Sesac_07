@@ -28,7 +28,7 @@ public class UserService {
             UserDTO userDTO = convertToDto(user);
             userDTOs.add(userDTO);
         }
-//        4) UserDTO 리스트 반환
+//        4) UserDTOs 리스트 반환
         return userDTOs;
     }
 
