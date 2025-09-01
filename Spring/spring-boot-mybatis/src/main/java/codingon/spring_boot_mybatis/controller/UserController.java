@@ -2,6 +2,7 @@ package codingon.spring_boot_mybatis.controller;
 
 import codingon.spring_boot_mybatis.dto.UserDTO;
 import codingon.spring_boot_mybatis.service.UserService;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,5 +43,11 @@ public class UserController {
         userDTO.setId(id);  // UserService/convertToEntity() 에서 user.setId(dto.getId()); 하기때문에 적음(?)
         userService.updateUser(userDTO);
         return userDTO;
+    }
+
+//    DELETE /api/users/:id : 특정 ID의 사용자 삭제
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
     }
 }

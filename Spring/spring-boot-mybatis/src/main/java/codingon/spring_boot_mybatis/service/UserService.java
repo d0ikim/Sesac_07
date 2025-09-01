@@ -52,6 +52,11 @@ public class UserService {
         userMapper.update(user);    // domain을 기반으로 mapper한테 update 요청
     }
 
+//    특정 ID의 사용자 삭제
+    public void deleteUser(Long id) {
+        userMapper.delete(id);
+    }
+
 //    domain to dto
     private UserDTO convertToDto(User user) {
         UserDTO dto = new UserDTO();

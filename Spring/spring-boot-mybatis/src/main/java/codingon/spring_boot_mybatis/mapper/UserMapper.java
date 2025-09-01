@@ -31,6 +31,9 @@ public interface UserMapper {
     @Update("UPDATE users SET username = #{username}, email = #{email} WHERE id = #{id}")
     void update(User user);
 
+    @Delete("DELETE FROM users WHERE id = #{id}")
+    void delete(Long id);
+
 //    case2. XML 기반 매퍼
 
 }
