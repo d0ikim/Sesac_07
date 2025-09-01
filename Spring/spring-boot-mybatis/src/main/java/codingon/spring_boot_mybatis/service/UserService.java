@@ -32,6 +32,20 @@ public class UserService {
         return userDTOs;
     }
 
+//    특정 ID의 사용자 정보를 UserDTO로 변환
+    public UserDTO getUserById(Long id) {
+        User user = userMapper.findById(id);
+
+        return convertToDto(user);
+    }
+
+//    새 사용자 생성
+    public void createUser(UserDTO userDTO) {
+//        userMapper.insert(userDTO) 불가해서
+        User user = convertToEntity(userDTO);   // dto -> domain
+        userMapper.insert(user);    // domain을 기반으로 mapper한테 insert 요청
+    }
+
 //    domain to dto
     private UserDTO convertToDto(User user) {
         UserDTO dto = new UserDTO();
@@ -41,6 +55,16 @@ public class UserService {
         dto.setNo((int) (user.getId() + 100));
 
         return dto;
+    }
+
+//    dto to domain
+    private User convertToEntity(UserDTO dto) {
+        User user = new User();
+        user.setId(dto.getId());
+        user.setUsername(dto.getUsername());
+        user.setEmail(dto.getEmail());
+
+        return user;
     }
     
 //    참고. domain.User 와 dto.UserDTO 를 서로 변환하는 이유

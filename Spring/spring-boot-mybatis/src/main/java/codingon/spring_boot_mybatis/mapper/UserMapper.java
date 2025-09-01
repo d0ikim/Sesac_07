@@ -1,7 +1,9 @@
 package codingon.spring_boot_mybatis.mapper;
 
 import codingon.spring_boot_mybatis.domain.User;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -15,6 +17,19 @@ public interface UserMapper {
 //    - @Select, @Insert, @Update, @Delete 어노테이션 사용
     @Select("SELECT * FROM users")
     List<User> findAll();
+
+    @Select("SELECT * FROM users where id = #{id}")
+    User findById(Long id);
+
+    @Insert("INSERT INTO users (username, email) values (#{username}, #{email})")
+//    Insert 작업에 대한 추가 옵션 설정
+//    - useGeneratedKeys = true : 데이터베이스에서 자동 생성되는 키 (auto-increment pk)를 사용하겠다
+//    - keyProperty = "id" : 생성된 값을 User 객체의 id 필드에 저장하겠다는 의미
+//      -> insert 메서드 호출 후 전달된 User 객체의 id 필드는 데이터베이스에서 생성된 실제 id 값으로 업데이트
+//          -> 새로 삽입된 행의 id를 즉시 알 수 있게 되어 이후 작업에 해당 id를 사용 가능
+//    만약, users테이블의 id(pk)를 수동으로 설정한다면 Options 어노테이션 필요 x
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    void insert(User user);
 
 //    case2. XML 기반 매퍼
 
