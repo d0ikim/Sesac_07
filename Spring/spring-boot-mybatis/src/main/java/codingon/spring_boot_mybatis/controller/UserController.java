@@ -22,6 +22,12 @@ public class UserController {
         return userService.getAllUsers();
     }
 
+//    GET /api/users/:id : 특정 ID의 사용자 정보를 반환
+    @GetMapping("/{id}")
+    public UserDTO getUser(@PathVariable Long id) {
+        return userService.getUserById(id);
+    }
+
 //    POST /api/users : 새 사용자를 생성하고 생성된 사용자 정보 반환
     @PostMapping
     public UserDTO createUser(@RequestBody UserDTO userDTO) {
@@ -30,9 +36,11 @@ public class UserController {
         return userDTO;
     }
 
-//    GET /api/users/:id : 특정 ID의 사용자 정보를 반환
-    @GetMapping("/{id}")
-    public UserDTO getUser(@PathVariable Long id) {
-        return userService.getUserById(id);
+//    PUT /api/users/:id : 특정 ID의 사용자 정보를 업데이트하고 업데이트된 정보를 반환
+    @PutMapping("/{id}")
+    public UserDTO updateUser(@PathVariable Long id, @RequestBody UserDTO userDTO) {
+        userDTO.setId(id);  // UserService/convertToEntity() 에서 user.setId(dto.getId()); 하기때문에 적음(?)
+        userService.updateUser(userDTO);
+        return userDTO;
     }
 }

@@ -46,6 +46,12 @@ public class UserService {
         userMapper.insert(user);    // domain을 기반으로 mapper한테 insert 요청
     }
 
+//    사용자 정보 업데이트
+    public void updateUser(UserDTO userDTO) {
+        User user = convertToEntity(userDTO);   // dto -> domain
+        userMapper.update(user);    // domain을 기반으로 mapper한테 update 요청
+    }
+
 //    domain to dto
     private UserDTO convertToDto(User user) {
         UserDTO dto = new UserDTO();
