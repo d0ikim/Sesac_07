@@ -42,6 +42,12 @@ public class BoardService {
         boardMapper.insert(board);  // domain을 기반으로 mapper한테 insert 요청
 
     }
+    
+//    글 수정
+    public void updatePost(BoardDTO boardDTO) {
+        Board board = convertToEntity(boardDTO);    // dto -> domain
+        boardMapper.update(board);  // domain을 기반으로 mapper한테 update 요청
+    }
 
 //    domain to dto
     private BoardDTO convertToDto(Board board) {

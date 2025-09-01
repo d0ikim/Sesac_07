@@ -33,4 +33,12 @@ public class BoardController {
         return boardDTO;
     }
 
+//    PUT /api/board/:id : 특정 ID의 글 내용을 수정하고 수정된 글을 반환
+    @PutMapping("/{id}")
+    public BoardDTO updatePost(@PathVariable int id, @RequestBody BoardDTO boardDTO) {
+        boardDTO.setId(id);
+        boardService.updatePost(boardDTO);
+        return boardDTO;
+    }
+
 }
