@@ -20,5 +20,6 @@ public interface BoardMapper {
     @Update("UPDATE board SET title = #{title}, content = #{content}, writer = #{writer} WHERE id = #{id}")
     void update(Board board);
 
-
+    @Delete("DELETE FROM board WHERE id = #{id}")
+    void delete(int id);
 }

@@ -49,6 +49,11 @@ public class BoardService {
         boardMapper.update(board);  // domain을 기반으로 mapper한테 update 요청
     }
 
+//    특정 ID의 글 삭제
+    public void deletePost(int id) {
+        boardMapper.delete(id);
+    }
+
 //    domain to dto
     private BoardDTO convertToDto(Board board) {
         BoardDTO dto = new BoardDTO();

@@ -41,4 +41,10 @@ public class BoardController {
         return boardDTO;
     }
 
+//    DELETE /api/board/:id : 특정 ID의 글 삭제
+    @DeleteMapping("/{id}")
+    public void deletePost(@PathVariable int id) {
+        boardService.deletePost(id);
+    }
+
 }
