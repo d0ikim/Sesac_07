@@ -8,10 +8,11 @@ import java.util.List;
 @Mapper // 해당 인터페이스가 MyBatis의 mapper 임을 나타냄
 public interface UserMapper {
 
-//    case1. 어노테이션 기반 매퍼
-//    - 간단한 SQL(쿼리)의 경우 간결하게 표현
-//    - Java 코드 내에서 SQL 문을 직접 볼 수 있어 즉각적인 이해 가능
-//    - @Select, @Insert, @Update, @Delete 어노테이션 사용
+    /*
+    case1. 어노테이션 기반 매퍼
+    - 간단한 SQL(쿼리)의 경우 간결하게 표현
+    - Java 코드 내에서 SQL 문을 직접 볼 수 있어 즉각적인 이해 가능
+    - @Select, @Insert, @Update, @Delete 어노테이션 사용
     @Select("SELECT * FROM users")
     List<User> findAll();
 
@@ -33,7 +34,16 @@ public interface UserMapper {
 
     @Delete("DELETE FROM users WHERE id = #{id}")
     void delete(Long id);
+    */
 
 //    case2. XML 기반 매퍼
-
+//    - 복잡한 SQL 쿼리를 쉽게 관리
+//    - 동적 SQL 작성 편리
+//    - SQL과 Java코드를 분리하여 관리가능
+//    - 대규모 프로젝트나 복잡한 데이터 조작 시 적합
+    List<User> findAll();
+    User findById(Long id);
+    void insert(User user);
+    void update(User user);
+    void delete(Long id);
 }

@@ -7,6 +7,8 @@ import java.util.List;
 
 @Mapper
 public interface BoardMapper {
+//    case1. 어노테이션 기반 매퍼
+    /*
     @Select("SELECT * FROM board")
     List<Board> findAll();
 
@@ -21,5 +23,13 @@ public interface BoardMapper {
     void update(Board board);
 
     @Delete("DELETE FROM board WHERE id = #{id}")
+    void delete(int id);
+    */
+
+//    case2. XML 기반 매퍼
+    List<Board> findAll();
+    Board findByWriter(String writer);
+    void insert(Board board);
+    void update(Board board);
     void delete(int id);
 }
