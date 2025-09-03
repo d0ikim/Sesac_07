@@ -16,4 +16,5 @@
     <delete id="delete" parameterType="int">
         DELETE FROM board WHERE id = #{id}
     </delete>
+    
 </mapper>
