@@ -49,6 +49,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
             "WHERE u.username = :username")
         // 참고. CASE WHEN (조건식) THEN (결과1) ELSE (결과2) END (SQL문) => CASE WHEN 구문
     boolean existsByUsername(String username);
-
-
 }
