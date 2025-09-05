@@ -76,7 +76,9 @@ public class UserService {
     }
 
     public List<UserDTO> searchUsers(String keyword) {
-        List<User> users = userRepository.findByUsernameContainingOrEmailContaining(keyword, keyword);
+//        List<User> users = userRepository.findByUsernameContainingOrEmailContaining(keyword, keyword);
+        List<User> users = userRepository.findByUsernameContainingOrEmailContaining(keyword);
+
 //        - 첫 번째 인자: username 을 검색하기 위한 keyword 매개값
 //        - 두 번째 인자: email 을 검색하기 위한 keyword 매개값
         List<UserDTO> userDTOs = new ArrayList<>();
