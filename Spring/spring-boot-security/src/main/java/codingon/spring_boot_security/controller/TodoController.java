@@ -6,6 +6,7 @@ import codingon.spring_boot_security.entity.TodoEntity;
 import codingon.spring_boot_security.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,11 +26,15 @@ public class TodoController {
 //    - headers(): 응답 헤더 부가적으로 설정하고 싶을 시
 //    - body(): 응답 본문 설정
     @PostMapping
-    public ResponseEntity<?> createTodo(@RequestBody TodoDTO dto) {
+    public ResponseEntity<?> createTodo(@AuthenticationPrincipal String userId, @RequestBody TodoDTO dto) {
 //        <?> : 유연한 Generic 타입을 쓰겠다는 의미
+//        @AuthenticationPrincipal
+//        - 현재 인증된 사용자 정보에 접근할 수 있게 됨
+//        - Spring Security는 security context에서 현재 인증된 사용자의 principal을 가져옴
+//        우리 코드에서는) jwtAuthenticationFilter클래스에서 userId를 바탕으로 인증객체 생성
         try {
-//            TODO: 임시 유저 하드코딩한 부분으로 추후 로그인된 유저로 변경 필요
-            String temporaryUserId = "temporary-user";
+//            todo: 임시 유저 하드코딩한 부분으로 추후 로그인된 유저로 변경 필요
+//            String temporaryUserId = "temporary-user";
 
 //            (1) DTO to Entity
             TodoEntity entity = TodoDTO.toEntity(dto);
@@ -39,10 +44,11 @@ public class TodoController {
             entity.setId(null); // 어차피 DB단(TodoEntity.java - @Id @GeneratedValue() )에서 자동발급해줄거니까!
 
 //            (3) 유저 아이디 설정 ("누가" 생성한 투두인지를 설정)
-//            TODO: 임시 유저 하드코딩한 부분으로 추후 로그인된 유저로 변경 필요
-            entity.setUserId(temporaryUserId);
+//            entity.setUserId(temporaryUserId);    // 임시 유저 하드코딩한 부분으로 추후 로그인된 유저로 변경함
+//            기존 temporaryUserId 대신 매개변수로 넘어온 userId 설정
+            entity.setUserId(userId);
 
-//            (4) 서비스 게층을 이용해 TodoEntity 생성
+//            (4) 서비스 계층을 이용해 TodoEntity 생성
             List<TodoEntity> entities = service.create(entity);
 
 //            (5) 리턴된 엔티티리스트를 TodoDTO로 변환
@@ -73,13 +79,45 @@ public class TodoController {
         }
     }
 
+    @PutMapping
+    @RequestMapping("/{id}")
+    public ResponseEntity<?> updateTodo(@AuthenticationPrincipal String userId, @PathVariable Long id, @RequestBody TodoDTO dto) {
+//        (1) DTO to Entity
+        TodoEntity entity = TodoDTO.toEntity(dto);  // 요청body로 받은 dto(필요한 필드만 전달하는 객체)를 Entity(DB형식)인스턴스로 변환해 저장
+
+//        (2) 수정할 entity의 id(pk)초기화
+        entity.setId(id);   // 새로 만든 Entity인스턴스에 경로변수로 받은 투두id값 설정
+
+//        (3) 유저 아이디 설정 ("누가" 생성한 투두를 수정할지 설정)
+        entity.setUserId(userId);   // 새로 만든 Entity인스턴스에 매개변수로 받은 userId값 설정
+
+//        (4) 서비스 계층을 이용해 TodoEntity 수정
+//        서비스계층에 만든 update 메소드 호출해,
+        List<TodoEntity> entities = service.update(entity); // 수정한 그 행을 포함한 해당 유저의 투두들 전체 반환된 값 엔티티(DB형식)리스트 만들어 저장
+
+//        (5) 리턴된 엔티티(DB형식)리스트 속 투두들을 TodoDTO(필요한필드만 전달하는 객체)로 변환
+        List<TodoDTO> dtos = new ArrayList<>(); // 배열리스트로 프론트에 보낼 필드만 들어있는 DTO들리스트를 만듬
+        for (TodoEntity tEntity: entities) {    // 반환된 엔티티(DB형식)리스트들 순회하며,
+            TodoDTO tDto = new TodoDTO(tEntity);    // t(odo)Entity를 t(odo)DTO로 변환하는 생성자
+        }
+
+//        응답엔티티 만들기
+        ResponseDTO<TodoDTO> response = ResponseDTO
+                .<TodoDTO>builder()
+                .data(entity)
+                .build();
+
+        return ResponseEntity.ok().body(response);
+    }
+
     @GetMapping
-    public ResponseEntity<?> retrieveTodoList(){
+    public ResponseEntity<?> retrieveTodoList(@AuthenticationPrincipal String userId){
 //        TODO: 임시 유저 하드코딩한 부분으로 추후 로그인된 유저로 변경 필요
-        String temporaryUserId = "temporary-user";
+//        String temporaryUserId = "temporary-user";
 
 //        (1) 서비스 게층의 retrieve 메서드를 사용해 투두리스트 가져오기
-        List<TodoEntity> entities = service.retrieve(temporaryUserId);
+//        List<TodoEntity> entities = service.retrieve(temporaryUserId);    // 임시 유저 하드코딩한 부분으로 추후 로그인된 유저로 변경함
+        List<TodoEntity> entities = service.retrieve(userId);
 
 //        (2) 리턴된 엔티티리스트를 TodoDTO리스트로 변환
         List<TodoDTO> dtos = new ArrayList<>();

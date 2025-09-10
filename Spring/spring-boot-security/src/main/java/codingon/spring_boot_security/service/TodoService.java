@@ -39,6 +39,15 @@ public class TodoService {
     }
 
 //    Update todo
+    public List<TodoEntity> update(final TodoEntity entity) {
+        validate(entity);   // 유효성 검사
+
+        repository.save(entity);    // db update
+
+        log.info("Entity id: {} is updated", entity.getId());   // 로그 찍기
+
+        return repository.findByUserId(entity.getUserId()); // db select 수행 (수정한 그 행을 포함한 해당 유저의 투두 전체 반환)
+    }
 
 //    Delete todo
 
