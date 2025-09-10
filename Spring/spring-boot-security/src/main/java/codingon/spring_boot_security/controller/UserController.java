@@ -3,6 +3,7 @@ package codingon.spring_boot_security.controller;
 import codingon.spring_boot_security.dto.ResponseDTO;
 import codingon.spring_boot_security.dto.UserDTO;
 import codingon.spring_boot_security.entity.UserEntity;
+import codingon.spring_boot_security.security.TokenProvider;
 import codingon.spring_boot_security.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     @Autowired
     private UserService userService;
+
+//    [after] JWT 적용
+    @Autowired
+    private TokenProvider tokenProvider;
 
 //    회원가입
     @PostMapping("/signup")
@@ -54,9 +59,23 @@ public class UserController {
 
         if (user != null) {
 //            로그인 검사 통과!
+
+            /*
+            [before]
             final UserDTO responseUserDTO = UserDTO.builder()
                     .email(user.getEmail())
                     .id(userDTO.getId())
+                    .build();
+             */
+
+//            [after] JWT 적용 후
+            final String token = tokenProvider.create(user);
+//            System.out.println("token="+token);
+//            System.out.println("user="+user);
+            final UserDTO responseUserDTO = UserDTO.builder()
+                    .email(user.getEmail())
+                    .id(userDTO.getId())
+                    .token(token)   // 토큰 설정
                     .build();
 
             return ResponseEntity.ok().body(responseUserDTO);
