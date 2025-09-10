@@ -34,6 +34,9 @@ public class TodoService {
 
 
 //    read todo
+    public List<TodoEntity> retrieve(final String userId) {
+        return repository.findByUserId(userId);
+    }
 
 //    Update todo
 

@@ -6,10 +6,7 @@ import codingon.spring_boot_security.entity.TodoEntity;
 import codingon.spring_boot_security.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,5 +71,27 @@ public class TodoController {
 //            badRequest(): 400 에러 응답을 전송
             return ResponseEntity.badRequest().body(response);
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<?> retrieveTodoList(){
+//        TODO: 임시 유저 하드코딩한 부분으로 추후 로그인된 유저로 변경 필요
+        String temporaryUserId = "temporary-user";
+
+//        (1) 서비스 게층의 retrieve 메서드를 사용해 투두리스트 가져오기
+        List<TodoEntity> entities = service.retrieve(temporaryUserId);
+
+//        (2) 리턴된 엔티티리스트를 TodoDTO리스트로 변환
+        List<TodoDTO> dtos = new ArrayList<>();
+        for (TodoEntity tEntity: entities) {
+            TodoDTO tDto = new TodoDTO(tEntity);    // TodoEntity -> TodoDTO로 변환하는 생성자
+            dtos.add(tDto);
+        }
+
+//        (3) 변환된 TodoDTO리스트를 이용해 ResponseDTO를 초기화
+        ResponseDTO<TodoDTO> response = ResponseDTO.<TodoDTO>builder().data(dtos).build();
+
+//        (4) ResponseDTO를 클라이언트에게로 리턴
+        return ResponseEntity.ok().body(response);  // 응답 body를 response(TodoDTO)인스턴스로 설정
     }
 }
