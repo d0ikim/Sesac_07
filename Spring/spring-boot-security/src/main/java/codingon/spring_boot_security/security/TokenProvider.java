@@ -1,10 +1,12 @@
 package codingon.spring_boot_security.security;
 
+import codingon.spring_boot_security.config.jwt.JwtProperties;
 import codingon.spring_boot_security.entity.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -15,8 +17,12 @@ import java.util.Date;
 @Service    // 서비스게층 컴포넌트로 등록해서 다른 곳에서 주입받아서 쓰기 위함
 @Slf4j
 public class TokenProvider {
-//    JWT 서명에 사용되는 비밀키 (일단은 하드코딩, TODO 나중에 바꾸기)
-    private static final String SECRET_KEY = "sesac-spring-boot-kimdoi1004";
+//    [before] JWT 서명에 사용되는 비밀키 (일단은 하드코딩, TODOd 나중에 하위 [after]로 바꾸었음)
+//    private static final String SECRET_KEY = "sesac-spring-boot-kimdoi1004";
+
+//    [after] JwtProperties 클래스 이용해 설정 파일 값 불러오기
+    @Autowired
+    private JwtProperties jwtProperties;
 
 //    create(): JWT 생성
 //    => 로그인 성공 시에 이 메서드가 호출되어 JWT 토큰을 발급함
@@ -27,7 +33,7 @@ public class TokenProvider {
 //        JWT 토큰 생성
         return Jwts.builder()
 //                jwt header(암호화 알고리즘, 타입) 에 들어갈 내용 및 서명하기 위한 SECRET KEY
-                .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
+                .signWith(SignatureAlgorithm.HS512, jwtProperties.getSecretKey())
 //                jwt payload(sub,name,admin,iat 등)
                 .setSubject(String.valueOf(userEntity.getId())) // sub: 토큰 제목(여기서는 userId)
                 .setIssuer("demo app")                          // iss: 토큰 발급자
@@ -44,7 +50,7 @@ public class TokenProvider {
 //        - 서명이 위조되거나 만료된 토큰이라면 예외 발생
 //        - 위조되지 않았다면 페이로드(Claims) 리턴
         Claims claims = Jwts.parser()
-                .setSigningKey(SECRET_KEY)  // 서명 검증에 사용할 비밀키 지정
+                .setSigningKey(jwtProperties.getSecretKey())  // 서명 검증에 사용할 비밀키 지정
                 .parseClaimsJws(token)      // JWT 파싱 -> header, payload, signature 검증
                 .getBody();
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/todo")
@@ -54,11 +55,12 @@ public class TodoController {
             List<TodoEntity> entities = service.create(entity);
 
 //            (5) 리턴된 엔티티리스트를 TodoDTO로 변환
-            List<TodoDTO> dtos = new ArrayList<>();
-            for (TodoEntity tEntity: entities) {    // (4)의 for문
-                TodoDTO tDto = new TodoDTO(tEntity);    // TodoEntity -> TodoDTO로 변환하는 생성자
-                dtos.add(tDto);
-            }
+//            List<TodoDTO> dtos = new ArrayList<>();
+            List<TodoDTO>dtos = entities.stream().map(TodoDTO::new).collect(Collectors.toList());   // 스트림을 이용한 코드
+//            for (TodoEntity tEntity: entities) {    // (4)의 for문
+//                TodoDTO tDto = new TodoDTO(tEntity);    // TodoEntity -> TodoDTO로 변환하는 생성자
+//                dtos.add(tDto);
+//            }
 
 //            (6) 변환된 todoDTO리스트를 이용해 ResponseDTO 초기화
 //            -> TodoDTO타입을 담는 ResponseDTO 객체를 빌드하겠습니다..!
