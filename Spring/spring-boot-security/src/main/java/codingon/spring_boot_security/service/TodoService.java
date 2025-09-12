@@ -32,7 +32,6 @@ public class TodoService {
 //    todo: 이거 나중에 보충해야 함
 //    fixme: 지금은 하드코딩했는데, 카테고리가 추가되면 코드 변경 필요
 
-
 //    2. Read todo
     public List<TodoEntity> retrieve(final String userId) {
         return repository.findByUserId(userId);
@@ -50,6 +49,10 @@ public class TodoService {
     }
 
 //    4. Delete todo
+    public void delete(final Long todoId) {
+        return repository.delete(repository.findById(todoId));
+
+    }
 
 
 //    유효성 검사

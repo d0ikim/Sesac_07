@@ -138,5 +138,14 @@ public class TodoController {
         return ResponseEntity.ok().body(response);
     }
 
+//    4. Delete
+    @DeleteMapping
+    @RequestMapping("/{id}")
+    public ResponseEntity<?> deleteTodo(@AuthenticationPrincipal String userId, @PathVariable Long id) {
+//        (1) 서비스 계층의 retrieve 메서드를 사용해 해당 user의 투두들 가져오기
+        List<TodoEntity> entities = service.retrieve(userId);
 
+//        (2) 서비스 계층의 delete 메서드를 사용해 투두 삭제하기
+        service.delete(id);
+    }
 }
