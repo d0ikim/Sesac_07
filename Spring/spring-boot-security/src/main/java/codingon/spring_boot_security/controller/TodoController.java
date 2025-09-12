@@ -56,7 +56,10 @@ public class TodoController {
 
 //            (5) 리턴된 엔티티리스트를 TodoDTO로 변환
 //            List<TodoDTO> dtos = new ArrayList<>();
-            List<TodoDTO>dtos = entities.stream().map(TodoDTO::new).collect(Collectors.toList());   // 스트림을 이용한 코드
+            List<TodoDTO>dtos = entities.stream()
+                    .map(TodoDTO::new)
+                    .collect(Collectors
+                            .toList());   // 스트림을 이용한 코드
 //            for (TodoEntity tEntity: entities) {    // (4)의 for문
 //                TodoDTO tDto = new TodoDTO(tEntity);    // TodoEntity -> TodoDTO로 변환하는 생성자
 //                dtos.add(tDto);
