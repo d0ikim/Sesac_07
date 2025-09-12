@@ -25,6 +25,8 @@ public class TodoController {
 //    - ok(): 요청 성공 시
 //    - headers(): 응답 헤더 부가적으로 설정하고 싶을 시
 //    - body(): 응답 본문 설정
+
+//    1. Create
     @PostMapping
     public ResponseEntity<?> createTodo(@AuthenticationPrincipal String userId, @RequestBody TodoDTO dto) {
 //        <?> : 유연한 Generic 타입을 쓰겠다는 의미
@@ -79,37 +81,7 @@ public class TodoController {
         }
     }
 
-    @PutMapping
-    @RequestMapping("/{id}")
-    public ResponseEntity<?> updateTodo(@AuthenticationPrincipal String userId, @PathVariable Long id, @RequestBody TodoDTO dto) {
-//        (1) DTO to Entity
-        TodoEntity entity = TodoDTO.toEntity(dto);  // 요청body로 받은 dto(필요한 필드만 전달하는 객체)를 Entity(DB형식)인스턴스로 변환해 저장
-
-//        (2) 수정할 entity의 id(pk)초기화
-        entity.setId(id);   // 새로 만든 Entity인스턴스에 경로변수로 받은 투두id값 설정
-
-//        (3) 유저 아이디 설정 ("누가" 생성한 투두를 수정할지 설정)
-        entity.setUserId(userId);   // 새로 만든 Entity인스턴스에 매개변수로 받은 userId값 설정
-
-//        (4) 서비스 계층을 이용해 TodoEntity 수정
-//        서비스계층에 만든 update 메소드 호출해,
-        List<TodoEntity> entities = service.update(entity); // 수정한 그 행을 포함한 해당 유저의 투두들 전체 반환된 값 엔티티(DB형식)리스트 만들어 저장
-
-//        (5) 리턴된 엔티티(DB형식)리스트 속 투두들을 TodoDTO(필요한필드만 전달하는 객체)로 변환
-        List<TodoDTO> dtos = new ArrayList<>(); // 배열리스트로 프론트에 보낼 필드만 들어있는 DTO들리스트를 만듬
-        for (TodoEntity tEntity: entities) {    // 반환된 엔티티(DB형식)리스트들 순회하며,
-            TodoDTO tDto = new TodoDTO(tEntity);    // t(odo)Entity를 t(odo)DTO로 변환하는 생성자
-        }
-
-//        응답엔티티 만들기
-        ResponseDTO<TodoDTO> response = ResponseDTO
-                .<TodoDTO>builder()
-                .data(entity)
-                .build();
-
-        return ResponseEntity.ok().body(response);
-    }
-
+//    2. Read
     @GetMapping
     public ResponseEntity<?> retrieveTodoList(@AuthenticationPrincipal String userId){
 //        TODO: 임시 유저 하드코딩한 부분으로 추후 로그인된 유저로 변경 필요
@@ -132,4 +104,39 @@ public class TodoController {
 //        (4) ResponseDTO를 클라이언트에게로 리턴
         return ResponseEntity.ok().body(response);  // 응답 body를 response(TodoDTO)인스턴스로 설정
     }
+
+//    3. Update
+    @PutMapping
+    @RequestMapping("/{id}")
+    public ResponseEntity<?> updateTodo(@AuthenticationPrincipal String userId, @PathVariable Long id, @RequestBody TodoDTO dto) {
+//        (1) DTO to Entity
+        TodoEntity entity = TodoDTO.toEntity(dto);  // 요청body로 받은 dto(필요한 필드만 전달하는 객체)를 Entity(DB형식)인스턴스로 변환해 저장
+
+//        (2) 수정할 entity의 id(pk)초기화
+        entity.setId(id);   // 새로 만든 Entity인스턴스에 경로변수로 받은 투두id값 설정
+
+//        (3) 유저 아이디 설정 ("누가" 생성한 투두를 수정할지 설정)
+        entity.setUserId(userId);   // 새로 만든 Entity인스턴스에 매개변수로 받은 userId값 설정
+
+//        (4) 서비스 계층을 이용해 TodoEntity 수정
+//        서비스계층에 만든 update 메소드 호출해,
+        List<TodoEntity> entities = service.update(entity); // 수정한 그 행을 포함한, 해당 유저의 투두들 전체 반환된 값 엔티티(DB형식)리스트 만들어 저장
+
+//        (5) 리턴된 엔티티(DB형식)리스트 속 투두들을 TodoDTO(필요한필드만 전달하는 객체 - 보안.캡슐화과정?)로 변환
+        List<TodoDTO> dtos = new ArrayList<>(); // 배열리스트로 프론트에 보낼 필드만 들어있는 DTO들리스트를 만듬
+        for (TodoEntity tEntity: entities) {    // 반환된 엔티티(DB형식)리스트들 순회하며,
+            TodoDTO tDto = new TodoDTO(tEntity);    // t(odo)Entity를 t(odo)DTO로 변환하는 생성자
+            dtos.add(tDto);
+        }
+
+//        응답DTO 만들기
+        ResponseDTO<TodoDTO> response = ResponseDTO
+                .<TodoDTO>builder()
+                .data(dtos)
+                .build();
+
+        return ResponseEntity.ok().body(response);
+    }
+
+
 }

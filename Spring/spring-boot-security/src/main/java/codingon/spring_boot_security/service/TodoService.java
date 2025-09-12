@@ -18,11 +18,11 @@ public class TodoService {
     @Autowired
     private TodoRepository repository;
 
-//    Create todo
+//    1. Create todo
     public List<TodoEntity> create(final TodoEntity entity) {
         validate(entity);   // 유효성 검사
         
-        repository.save(entity);    // db insert
+        repository.save(entity);    // db insert (JPA기본)
         
         log.info("Entity id: {} is saved", entity.getId()); // 로그 찍기
 
@@ -33,23 +33,23 @@ public class TodoService {
 //    fixme: 지금은 하드코딩했는데, 카테고리가 추가되면 코드 변경 필요
 
 
-//    read todo
+//    2. Read todo
     public List<TodoEntity> retrieve(final String userId) {
         return repository.findByUserId(userId);
     }
 
-//    Update todo
+//    3. Update todo
     public List<TodoEntity> update(final TodoEntity entity) {
         validate(entity);   // 유효성 검사
 
-        repository.save(entity);    // db update
+        repository.save(entity);    // db update (JPA 기본)
 
         log.info("Entity id: {} is updated", entity.getId());   // 로그 찍기
 
         return repository.findByUserId(entity.getUserId()); // db select 수행 (수정한 그 행을 포함한 해당 유저의 투두 전체 반환)
     }
 
-//    Delete todo
+//    4. Delete todo
 
 
 //    유효성 검사
