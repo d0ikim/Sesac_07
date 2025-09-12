@@ -8,6 +8,8 @@ import codingon.spring_boot_security.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +26,9 @@ public class UserController {
     @Autowired
     private TokenProvider tokenProvider;
 
+//    [after] 패스워드 암호화
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 //    회원가입
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
@@ -32,7 +37,7 @@ public class UserController {
             UserEntity user = UserEntity.builder()
                     .email(userDTO.getEmail())
                     .username(userDTO.getUsername())
-                    .password(userDTO.getPassword())
+                    .password(passwordEncoder.encode(userDTO.getPassword()))    // 패스워드 암호화 추가
                     .build();
 
 //            서비스계층 메서드를 이용해 repo에 사용자 자저아
@@ -54,7 +59,7 @@ public class UserController {
     @PostMapping("/signin")
     public ResponseEntity<?> authenticate(@RequestBody UserDTO userDTO) {
         UserEntity user = userService.getByCredentials( // 사용자 인증하는 메서드
-                userDTO.getEmail(), userDTO.getPassword()
+                userDTO.getEmail(), userDTO.getPassword(), passwordEncoder  // BCrypt패스워드인코더 추가
         );
 
         if (user != null) {

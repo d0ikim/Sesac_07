@@ -49,10 +49,10 @@ public class TodoService {
     }
 
 //    4. Delete todo
-    public void delete(final Long todoId) {
-        return repository.delete(repository.findById(todoId));
-
-    }
+//    public void delete(final Long todoId) {
+//        return repository.delete(repository.findById(todoId));
+//
+//    }
 
 
 //    유효성 검사
