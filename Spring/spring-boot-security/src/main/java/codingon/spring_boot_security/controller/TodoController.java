@@ -92,7 +92,7 @@ public class TodoController {
 //        TODO: 임시 유저 하드코딩한 부분으로 추후 로그인된 유저로 변경 필요
 //        String temporaryUserId = "temporary-user";
 
-//        (1) 서비스 게층의 retrieve 메서드를 사용해 투두리스트 가져오기
+//        (1) 서비스 계층의 retrieve 메서드를 사용해 투두리스트 가져오기
 //        List<TodoEntity> entities = service.retrieve(temporaryUserId);    // 임시 유저 하드코딩한 부분으로 추후 로그인된 유저로 변경함
         List<TodoEntity> entities = service.retrieve(userId);
 
@@ -111,8 +111,7 @@ public class TodoController {
     }
 
 //    3. Update
-    @PutMapping
-    @RequestMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateTodo(@AuthenticationPrincipal String userId, @PathVariable Long id, @RequestBody TodoDTO dto) {
 //        (1) DTO to Entity
         TodoEntity entity = TodoDTO.toEntity(dto);  // 요청body로 받은 dto(필요한 필드만 전달하는 객체)를 Entity(DB형식)인스턴스로 변환해 저장
@@ -144,13 +143,16 @@ public class TodoController {
     }
 
 //    4. Delete
-//    @DeleteMapping
-//    @RequestMapping("/{id}")
-//    public ResponseEntity<?> deleteTodo(@AuthenticationPrincipal String userId, @PathVariable Long id) {
-////        (1) 서비스 계층의 retrieve 메서드를 사용해 해당 user의 투두들 가져오기
-//        List<TodoEntity> entities = service.retrieve(userId);
-//
-////        (2) 서비스 계층의 delete 메서드를 사용해 투두 삭제하기
-//        service.delete(id);
-//    }
+    @DeleteMapping("/{id}")
+    public void deleteTodo(@PathVariable Long id) {
+//        (1) 서비스 계층의 delete 메서드를 사용해 투두 삭제하기
+        service.delete(id); // todoId로 바로 삭제
+
+//        (2) 삭제 성공 후 응답
+//        ResponseDTO<TodoDTO> response = ResponseDTO.<TodoDTO>builder()
+//                .data(null)
+//                .error("Todo deleted successfully")
+//                .build();
+//        return ResponseEntity.ok().body(response);
+    }
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 // Simple logging facade for java
@@ -49,10 +50,9 @@ public class TodoService {
     }
 
 //    4. Delete todo
-//    public void delete(final Long todoId) {
-//        return repository.delete(repository.findById(todoId));
-//
-//    }
+    public void delete(final Long id) {
+        repository.deleteById(id);
+    }
 
 
 //    유효성 검사

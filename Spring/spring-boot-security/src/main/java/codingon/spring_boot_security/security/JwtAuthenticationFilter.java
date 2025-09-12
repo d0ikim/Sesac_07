@@ -20,7 +20,7 @@ import java.io.IOException;
 
 @Slf4j  // 로깅 라이브러리
 @Component  // 스프링 컨테이너한테 Bean으로 등록해서 의존성 주입받으려고
-public class JwtAuthenticationFilter extends OncePerRequestFilter { // Servlet Filter를 구현한것
+public class JwtAuthenticationFilter extends OncePerRequestFilter { // Servlet Filter(미들웨어)를 구현한것
 //    OncePerRequestFilter클래스를 상속받는 JwtAuthenticationFilter 구현
 //    - OncePerRequestFilter 클래스: 한 요청당 반드시 한 번만 실행됨
     @Autowired
